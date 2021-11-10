@@ -1,0 +1,26 @@
+https://blog.csdn.net/fcjjlj/article/details/107772490
+
+通过在/etc/profile里面加入以下代码就可以实现
+source /etc/profile 使用脚本生效
+
+PS1="`whoami`@`hostname`:"'[$PWD]'
+history
+USER_IP=`who -u am i 2>/dev/null| awk '{print $NF}'|sed -e 's/[()]//g'`
+if [ "$USER_IP" = "" ]
+then
+USER_IP=`hostname`
+fi
+if [ ! -d /tmp/dishdp ]
+then
+mkdir /tmp/dishdp
+chmod 777 /tmp/dishdp
+fi
+if [ ! -d /tmp/dishdp/${LOGNAME} ]
+then
+mkdir /tmp/dishdp/${LOGNAME}
+chmod 300 /tmp/dishdp/${LOGNAME}
+fi
+export HISTSIZE=4096
+DT=`date "+%Y-%m-%d_%H:%M:%S"`
+export HISTFILE="/tmp/dishdp/${LOGNAME}/${USER_IP} dishdp.$DT"
+chmod 600 /tmp/dishdp/${LOGNAME}/*dishdp* 2>/dev/null
